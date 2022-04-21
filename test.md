@@ -1,16 +1,14 @@
 -   [Object Detection & Segmentation](#object-detection-segmentation)
--   [Table of contents](#table-of-contents)
-    -   [Dependancy](#Dependancy)
+    -   [Table of contents](#table-of-contents)
+        -   [Dependancy](#Dependancy)
 
 # Object Detection & Segmentation
 
-==================================
-
-# Table of contents
+## Table of contents
 
 -   [Dependancy](#Dependancy)
 
-## Dependancy
+### Dependancy
 
 -   CNN
 -   feature extractor network(convolution, kernel(filter), pooling,
