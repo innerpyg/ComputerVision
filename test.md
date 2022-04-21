@@ -1,6 +1,12 @@
--   [Dependancy](#Dependancy)
+Object Detection과 Segmentation
+================
+Aaron
+2022-04-21
 
-Object Detection & Segmentation
+-   [Object Detection & Segmentation](#object-detection--segmentation)
+    -   [Dependancy](#Dependancy)
+
+# Object Detection & Segmentation
 
 -   [Dependancy](#Dependancy)
 
