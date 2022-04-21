@@ -1,10 +1,16 @@
-Object Detection과 Segmentation
-================
-Aaron
-2022-04-21
+---
+title: "Object Detection과 Segmentation"
+author: "Aaron"
+date: '2022-04-21'
+output:
+  html_document:
+    #variant: markdown_github
+    toc: true
+    toc_depth: 4
+    keep_md: true
+---
 
--   [Object Detection & Segmentation](#object-detection--segmentation)
-    -   [Dependancy](#Dependancy)
+
 
 # Object Detection & Segmentation
 
@@ -12,9 +18,8 @@ Aaron
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### Dependancy
+### Dependancy {#Dependancy}
 
 -   CNN
--   feature extractor network(convolution, kernel(filter), pooling,
-    feature map)
+-   feature extractor network(convolution, kernel(filter), pooling, feature map)
 -   VGG, rasnet etc
