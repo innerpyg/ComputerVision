@@ -271,7 +271,7 @@ mAP(mean Average Precision)
 
 <br>
 
-
+![](figs/CherryBlossom-BGR.png){width=70%}
 
 ```python
 import cv2
@@ -279,15 +279,13 @@ import matplotlib.pyplot as plt
 #!/usr/bin/env python
 
 img_array = cv2.imread('figs/CherryBlossom.jpeg')
-plt.imshow(img_array)
+#plt.imshow(img_array)
 ```
-
-<img src="Chapter1_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 
 #### Image resolution, FPS, detection correlation
 
  - Resolution이 높으면 detection 성능은 좋으나 FPS가 낮음
- - 알고리즘 개선이 없다면 진보된 하드웨어만이 
+ - 알고리즘 개선이 없다면 진보된 하드웨어가 필요...
 
 <br><br>
