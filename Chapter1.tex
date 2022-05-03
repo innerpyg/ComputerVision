@@ -1,0 +1,456 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Object Detection과 Segmentation},
+  pdfauthor={Written by Aaron},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Object Detection과 Segmentation}
+\author{Written by Aaron}
+\date{2022-04-23}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{dependancy}{%
+\subsection{0. Dependancy}\label{dependancy}}
+
+\begin{itemize}
+\tightlist
+\item
+  CNN
+\item
+  feature extractor network(convolution, kernel(filter), pooling,
+  feature map)
+\item
+  VGG, rasnet etc
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{itemize}
+\tightlist
+\item
+  2012년도에 AlexNet이 ImageNet compatition에서 DL기반의 CNN을 사용
+\item
+  이 시점을 기준으로 DL에 대한 performance 등 여러 가능성이 증가함
+\end{itemize}
+
+\hypertarget{definition}{%
+\subsection{1. Definition}\label{definition}}
+
+\hypertarget{classification}{%
+\paragraph{Classification}\label{classification}}
+
+\begin{itemize}
+\tightlist
+\item
+  feature map과 label 등의 정보를 이용하여 이미지 분류
+\end{itemize}
+
+\hypertarget{localization}{%
+\paragraph{Localization}\label{localization}}
+
+\begin{itemize}
+\tightlist
+\item
+  이미지 안에서 특정 영역을 한정 짓는 것
+\item
+  하나의 이미지에 하나의 object를 bounding box로 지정하여 예측
+\end{itemize}
+
+\hypertarget{detection}{%
+\paragraph{Detection}\label{detection}}
+
+\begin{itemize}
+\tightlist
+\item
+  하나의 이미지에 다수의 Object
+\item
+  각 objectfmf bounding box로 구분하여 예측
+\item
+  Region proposal과 classification
+
+  \begin{itemize}
+  \tightlist
+  \item
+    동시에 진행되면 1stage detector
+  \item
+    region proposal \textgreater{} classification이 순차적으로 진행되면
+    2stage detector
+  \item
+    포인트는 성능과 수행 시간이 반비례
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{segmentation}{%
+\paragraph{Segmentation}\label{segmentation}}
+
+\begin{itemize}
+\tightlist
+\item
+  Detection에서 bounding box단위가 아니라 pixel 단위로 구분
+\end{itemize}
+
+\hypertarget{overview-of-object-detection}{%
+\subsection{2. Overview of Object
+Detection}\label{overview-of-object-detection}}
+
+\begin{itemize}
+\tightlist
+\item
+  Region proposal
+\item
+  DL network
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Feature extractor network
+  \item
+    FPN
+
+    \begin{itemize}
+    \tightlist
+    \item
+      feature extractor와 prediction network를 연결
+    \item
+      작은 object들에 대한 정보를 체계화시켜 분류
+    \item
+      Object가 크다는 전제조건이 있다면 무시할 수도 있을지도..
+    \end{itemize}
+  \item
+    Object Detection network
+  \end{itemize}
+\item
+  기타 요소
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{IoU}
+  \item
+    \textbf{NMS}
+  \item
+    \textbf{mAP}
+  \item
+    Anchor Box
+  \item
+    etc \ldots{}
+  \end{itemize}
+\item
+  Issue
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Classification + Regression을 동시에 진행
+  \item
+    다양한 크기의 object
+  \item
+    Detection time
+  \item
+    명확하지 않은 이미지
+  \item
+    train data set 부족(Annotation)
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{overview-of-object-localization}{%
+\subsection{3. Overview of Object
+Localization}\label{overview-of-object-localization}}
+
+\begin{itemize}
+\tightlist
+\item
+  단일 이미지의 localization의 경우 비교적 쉬움
+
+  \begin{itemize}
+  \tightlist
+  \item
+    classification의 flow와 동일한데, bounding box에 대한 regression이
+    추가됨
+  \item
+    bounding box에 대한 annotation file이 별도로 필요
+  \item
+    \textbf{좌표값을 나타내는 annotation file의 경우 데이터셋 및
+    알고리즘에 따라 차이가 있을 수 있음.}
+  \end{itemize}
+\item
+  결과는 예측 class에 따른 confidence(class) score와 bounding box의
+  좌표값을 출력
+\end{itemize}
+
+\includegraphics{figs/Chapter1-1.png} \textgreater{} softmax와 같은
+분류기를 FC layer에 포함시켜서 설명하는 경우도 있음
+
+\begin{itemize}
+\tightlist
+\item
+  보통 feature map에서 말하는 채널의 경우 이미지를 표현할 때 RGB에 의해
+  3개의 채널로 표현
+\item
+  근데,, 경우에 따라 채널 수가 매우 많아지는 경우가 있는 거 같은데;;
+\end{itemize}
+
+\hypertarget{overview-of-object-deteciton}{%
+\subsection{4. Overview of Object
+Deteciton}\label{overview-of-object-deteciton}}
+
+\begin{itemize}
+\tightlist
+\item
+  2개 이상의 object를 검출
+\item
+  한 이미지에 비슷한 feature인 object들이 있을 때 bounding box
+  regression에서 오류가 많이 발생
+\item
+  Region Proposal
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Sliding Window
+  \item
+    Selective Search(SS)
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{sliding-window}{%
+\paragraph{Sliding Window}\label{sliding-window}}
+
+\includegraphics{figs/Chapter1-2.png}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  다양한 크기의 window를 sliding하는 방식
+\item
+  window size를 고정하고 이미지 scale을 변화시킨 여러 이미지를 사용하는
+  방식
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  object detection의 초기 기법
+\item
+  object가 없더라도 무조건 모든 영역을 sliding, 수행 시간이 오래걸리고
+  성능이 낮음
+\item
+  window 하나에 하나의 object를 detection하는 것이 주 목적이였으나,
+  경우에 따라 또다시 여러 object가 위치할 수도 있음.
+\end{itemize}
+
+\hypertarget{selective-search}{%
+\paragraph{Selective Search}\label{selective-search}}
+
+x - object가 있을 법한 영역(bounding box) 후보리스트를 작성해서 최종
+후보를 도출 - 빠른 detection과 높은 recall 예측 성능을 동시에 만족 -
+flow에 따라 네트워크 안에 포함하여 구성할 수도 별도로 관리할 수도 있음 -
+최초의 pixel단위 intensity 기반, graph-based segmentation \textgreater{}
+over segmentation - 이미지의 컬러나 무늬, 크기에 따라 유사한 영역을
+반복적으로 grouping 하는 region proposal
+
+\includegraphics{figs/Chapter1-3.png}
+
+\hypertarget{iouintersection-over-union}{%
+\paragraph{IoU(Intersection over
+Union)}\label{iouintersection-over-union}}
+
+\begin{itemize}
+\tightlist
+\item
+  실제 object annotated bounding box의 영역과 예측한 bounding box 간
+  겹치는 부분의 비율이 얼마나 되는지를 통해 잘 예측했는지를 평가 (ratio
+  0 \textasciitilde{} 1)
+\item
+  compatition에 따른 IoU 활용
+
+  \begin{itemize}
+  \tightlist
+  \item
+    PASCAL VOC : IoU 0.5 기준 성능 평가
+  \item
+    MS-COCO : IoU를 0.5 \textasciitilde{} 0.95범위에서 다양하게 성능
+    평가, 2차원 metric으로 성능 평가할 것으로 추정
+  \end{itemize}
+\end{itemize}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{figs/Chapter1-4.png}
+\textless{}\center\textgreater{}
+
+\hypertarget{nmsnon-max-suppression}{%
+\paragraph{NMS(Non Max Suppression)}\label{nmsnon-max-suppression}}
+
+\begin{itemize}
+\tightlist
+\item
+  object 주변에 있는 bounding box중에서 가장 확실한 box를 제외한
+  나머지를 제외 시켜주는 기법
+\item
+  object detection의 정확도를 올리기 위해 사전에 false positive인
+  bounding box까지 모두 추천한 후, 그 중 가장 확실한 box를 선택해주는
+  기법이 필요
+\item
+  input
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Confidence score
+  \item
+    IoU score
+  \item
+    Confidence score가 높을수록, IoU가 낮을수록 더 많은 box가 제거됨.
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{object-detection-uxc131uxb2a5-uxd3c9uxac00-metrics---mapmean-average-precision-auc}{%
+\paragraph{Object detection 성능 평가 metrics - mAP(mean Average
+precision) =\textasciitilde{}
+AUC}\label{object-detection-uxc131uxb2a5-uxd3c9uxac00-metrics---mapmean-average-precision-auc}}
+
+\begin{itemize}
+\tightlist
+\item
+  Recall 변화에 따른 Precision 값을 평균한 성능 수치
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    IoU \& Confidence score
+  \item
+    Confusion metrics
+  \end{enumerate}
+\end{itemize}
+
+\includegraphics[width=0.7\textwidth,height=\textheight]{figs/Chapter1-5.png}
+
+\begin{quote}
+예측을 했냐? P(positive) 안했냐? N(negative), 그 예측 결과가 실제값과
+일치하냐? T(true) 일치하지 않느냐? F(false)
+\end{quote}
+
+\includegraphics{figs/Chapter1-6.png}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Precision-Recall curve(binary classification에서 잘 활용)
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Precision(정밀도) = \(TP/(FP+TP)\)
+\item
+  Recall(재현율) = \(TP/(FN+TP)\)
+\end{itemize}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{figs/Chapter1-7.png}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{figs/Chapter1-9.png}
+
+\begin{quote}
+일반적으로 Precision-Recall curve는 지그재그 형태로 나타남
+\end{quote}
+
+\hypertarget{precision-recall-trade-off}{%
+\paragraph{Precision \& Recall
+Trade-off}\label{precision-recall-trade-off}}
+
+\begin{itemize}
+\tightlist
+\item
+  =\textasciitilde{} Sensitivity \& Specificity
+\end{itemize}
+
+\includegraphics{figs/Chapter1-8.png}
+
+AP(Average Precision)
+
+\begin{itemize}
+\tightlist
+\item
+  하나의 object에 대한 성능 수치를 평가하는 지표
+\item
+  굳이 적용한다면 localization에 적용하는 것이 맞는 표현
+\end{itemize}
+
+mAP(mean Average Precision)
+
+\begin{itemize}
+\tightlist
+\item
+  object detection은 다수의 Object가 존재하기 때문에, 각 object의 AP를
+  계산 후, mean 계산
+\end{itemize}
+
+\end{document}

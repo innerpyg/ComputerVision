@@ -1,0 +1,31 @@
+"0","knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)"
+"0","if (!require(""pacman"")) install.packages(""pacman"")"
+"2","Loading required package: pacman
+"
+"0","pacman::p_load(knitr, ggplot2, dyplr, tidyr, plotly, gridExtra)"
+"2","Warning:"
+"2"," package ‘dyplr’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+"
+"2","Warning:"
+"2"," 'BiocManager' not available.  Could not check Bioconductor.
+
+Please use `install.packages('BiocManager')` and then retry.
+"
+"2","Warning in p_install(package, character.only = TRUE, ...) :"
+"2"," 
+"
+"2","Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :"
+"2","
+ "
+"2"," there is no package called ‘dyplr’
+"
+"2","Warning in pacman::p_load(knitr, ggplot2, dyplr, tidyr, plotly, gridExtra) :"
+"2","
+ "
+"2"," Failed to install/load:
+dyplr
+"

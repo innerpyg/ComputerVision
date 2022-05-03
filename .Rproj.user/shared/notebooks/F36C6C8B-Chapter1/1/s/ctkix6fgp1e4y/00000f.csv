@@ -1,0 +1,8 @@
+"0","import cv2"
+"0","import matplotlib.pyplot as plt"
+"0","#!/usr/bin/env python"
+"0",""
+"0","img_array = cv2.imread('figs/CherryBlossom.jpeg')"
+"0","plt.imshow(img_array)"
+"1","<matplotlib.image.AxesImage object at 0x1794c1760>
+"

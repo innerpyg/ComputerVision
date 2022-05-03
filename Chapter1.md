@@ -1,7 +1,7 @@
 ---
 title: "Object Detection과 Segmentation"
 author: "Written by Aaron"
-date: "2022-04-23"
+date: "2022-04-30"
 output:
   html_document:
     toc: yes
